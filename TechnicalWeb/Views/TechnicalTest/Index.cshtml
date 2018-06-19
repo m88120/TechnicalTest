@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h3>Welcome @ViewBag.Name</h3>
+
+<div class="row token-actions">
+    @*@Html.HiddenFor(model=>model.ExamDetailId)*@
+    <h4 class="align-right">
+        <a  href="javascript:void(0)" class="btn-blue" target="_blank" data-toggle="modal" data-target="#myModal">Take Technical Test</a>
+       @* @Html.ActionLink("Take Technical Test", "TestStart", "TechnicalTest", new { examdetailId = ViewBag.examDetailId }, new { @class = "btn-blue" })*@
+    </h4>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#428bca; color:#fff; border-radius:5px;">
+                <button type="button" class="close" data-dismiss="modal" style="color:#fff; opacity:1">&times;</button>
+                <h4 class="modal-title">Start Techincal Test</h4>
+            </div>
+            <div class="modal-body">
+                <p>Once you start taking the test your start time will be logged, are you sure you are ready to start or do you need more time?</p>
+            </div>
+            <div class="modal-footer">
+                @Html.ActionLink("Ready to start", "TestStart", "TechnicalTest", new { examdetailId = ViewBag.examDetailId }, new { @class = "btn-blue" })
+               
+                <a href="javascript:void(0)" class="btn-blue" data-dismiss="modal">Need more time</a>
+            </div>
+        </div>
+
+    </div>
+</div>

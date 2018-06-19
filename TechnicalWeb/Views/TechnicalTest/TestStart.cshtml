@@ -1,0 +1,151 @@
+﻿@model TechnicalCore.Models.ExamDetailModel
+@{
+    ViewBag.Title = "My Test";
+    // Layout = null;
+    int questionsCount = 0;
+    int questionsLabelCount = 1;
+    int i = 0;
+}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.css" rel="stylesheet" />
+<style>
+    .note-toolbar panel-heading {
+        display: none !important;
+    }
+
+    .note-editor.note-frame .note-editing-area .note-editable {
+        min-height: 200px
+    }
+
+    .note-toolbar panel-heading {
+        display: none !important;
+    }
+
+    .note-editor.note-frame .note-editing-area .note-editable {
+        min-height: 200px
+    }
+
+    textarea#Testdata {
+        max-width: 800px;
+    }
+
+    .margin-left-validation {
+        margin-left: -25px;
+    }
+
+    .padding_label_Paste {
+        padding-left: 15px !important;
+    }
+</style>
+<h2>Practical Test</h2>
+<hr />
+
+@*@if (Model != null)
+    {*@
+@using (Html.BeginForm("TestStart", "TechnicalTest", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.ExamSessonId)
+    @Html.HiddenFor(x => x.UniqueId)
+    @Html.HiddenFor(x=>x.IsAttachment)
+<div class="exam-detail_block_div" style="">
+    @if (@ViewBag.ErrorMessage != null)
+    {
+        <div class="form-group" style="color:red;">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+        <div style="font-weight:bold;">
+            @Html.Raw(Model.ExamTitle == null ? "" : Model.ExamTitle.Replace(Environment.NewLine, "<br/>"))
+        </div>
+</div>
+
+    if (Model.Questions != null)
+    {
+        foreach (var item in Model.Questions)
+        {
+            <div class="exam-detail_block_div_Question" style="">
+                <span>
+                    @Html.Label("Question " + (i + 1).ToString()+":")
+                    @Html.Raw(item.Name.Replace(Environment.NewLine, "<br/>"))
+                </span>
+
+             <div class="form-group" style="margin:3px;">
+                        @Html.LabelFor(x => item.Id, "Your Answer:", new { @class = "col-md-4 control-label" })
+
+                        <div class="clearfix">
+                        </div>
+                        @Html.Hidden("Questions[" + i + "].Id", item.Id)
+                       
+                        <textarea id="Questions[@i].Name" name="Questions[@i].Name" required rows="16" class="form-control col-md-8 summernote Quest_@questionsLabelCount"></textarea>
+                       
+                    </div>
+              
+            </div>
+            i++;
+        }
+    }
+    <div class="form-group" style="margin-left:10px;">
+        <div class="row">
+            <div class="col-md-12">
+                @Html.LabelFor(x => x.File, "Upload a zip file of your solution:", new { @class = @ViewBag.ErrorMessage != null ? "text-danger" : "" })
+            </div>
+            @Html.TextBoxFor(x => x.File, new { type = "file", @class = "col-md-12 " })
+        </div>
+
+    </div>
+    <div class="form-group">
+        <div class="row">
+            @Html.ValidationSummary("", new { @class = "text-danger validation-summary-errors col-md-12 margin-left-validation" })
+        </div>
+    </div>
+    <div class="form-group actions">
+        <input type="submit" value="Submit Test Response" id="btnSubmit" class="btn btn-blue" />
+
+        @*@{Html.RenderAction("SubmitResponse", new { examdetailId = ViewBag.examdetailId });}*@
+    </div>
+}
+
+
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    @*<script type = "text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>*@
+    @* @Scripts.Render("~/bundles/Script-custom-editor")*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js"></script>
+    <script>
+        //$(form).submit(function () {
+        //    if ($('#Source').val() == "Select") {
+
+        //    }
+        //})
+
+        $(document).ready(function () {
+            $("#btnSubmit").click(function () {
+                var isAttachment = $("#IsAttachment").val();
+               // alert(isAttachment);
+                if (isAttachment.toLowerCase() == "False".toLowerCase())
+                {
+                    $('#File').rules('remove', 'required');
+                    $("#File").removeAttr("data-val-required");
+                } 
+
+            });
+            $('.summernote').summernote({
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['undo', 'redo', 'bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph', 'style']],
+                    ['height', ['height']],
+                    ['insert', ['table', 'hr']],
+                    ['misc', ['fullscreen', 'codeview', 'help']]
+
+                ]
+            });
+            $(".note-toolbar").hide();
+        });
+
+        $('[data-toggle="tooltip"]').tooltip();
+    </script>
+}

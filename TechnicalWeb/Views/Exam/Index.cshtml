@@ -1,0 +1,179 @@
+﻿@*@model TechnicalCore.Models.ExamModelListing*@
+@model IEnumerable<TechnicalCore.Models.ExamModel>
+<style>
+    .noteclass {
+        max-width: 100px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .note-toolbar panel-heading {
+        display: none !important;
+    }
+
+    .note-editable {
+        min-height: 200px;
+    }
+    .note-editable p {
+        margin:0px !important;
+    }
+    #tblStud_wrapper.container-fluid {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.css" rel="stylesheet" />
+
+<h2>Administration</h2>
+@*<input type="button" class="btn-blue" style="float:right; margin-bottom:15px;" id="btnCreate" value="Create new Test" data-toggle="modal" data-target="#myModal" />*@
+<input type="button" class="btn-blue" style="float:right; margin-bottom:15px;" id="btnCreate" value="Create new Test" />
+@*@Html.ActionLink("Create new Test", "Create", null, new { @class = "btn-blue" })*@
+<div id="grdRecords">
+    @Html.Partial("_RecordView", Model)
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" style="width:70%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#428bca; color:#fff; border-radius:5px;">
+                <button type="button" class="close" data-dismiss="modal" style="color:#fff; opacity:1">&times;</button>
+                <h4 class="modal-title">Create/Update Exam</h4>
+            </div>
+            <div id="modal-body" class="modal-body">
+               
+            </div>
+
+        </div>
+
+    </div>
+</div>
+@section Scripts{
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js"></script>
+    <script>
+        function deleteTest(testId) {
+            if (confirm("Are you sure you want to delete the test")) {
+                window.location.href = '@Url.Action("Delete")' + "/" + testId;
+                alertify.success("Exam deleted successfully");
+            }
+        }
+         function editTest(testId) {
+           $.ajax({
+                    url: '@Url.Action("Edit", "Exam")',
+                    data: { id: testId},
+                    success: function (result) {
+                        //alert(result);
+                        $("#modal-body").html(result);
+                        $("#myModal").modal('show');
+                       // $("#myModal").dialog();
+
+                    },
+                    error: function (request, status, error) {
+                        //alert(status);
+                        alertify.error(status);
+                    }
+                });
+        }
+        $(document).ready(function () {
+            $(function () {
+                $('#btnSave').click(function (event) {
+                    $("#frmSubmit").submit();
+                    return false;
+                });
+            })
+            $(function () {
+                $('#btnCreate').click(function (event) {
+                    $.ajax({
+                    url: '@Url.Action("Create", "Exam")',
+                    success: function (result) {
+                        $("#modal-body").html(result);
+                        $("#myModal").modal('show');
+                       // $("#myModal").dialog();
+
+                    },
+                    error: function (request, status, error) {
+                       // alert(status);
+                        alertify.error(status);
+                    }
+                    });
+                });
+            })
+            $("#tblStud").DataTable({
+                "processing": true, // for show progress bar
+                "paging": false,
+                "filter": false,
+                // this is for disable filter (search box)
+                "order": []
+            });
+        });
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                focus: true,
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['undo', 'redo', 'bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph', 'style']],
+                    ['height', ['height']],
+                    ['insert', ['table', 'hr']],
+                    ['misc', ['fullscreen', 'codeview', 'help']]
+
+                ]
+            });
+        });
+        $(document).ready(function () {
+            $(function () {
+                $('#btnSaveTest').click(function (event) {
+                    $(".validation-summary-errors").empty();
+                    if ($("#Description").val().trim() != "" && $("#TestTitle").val().trim() !="") {
+                        $("#frmTestSubmit").submit();
+                        return false;
+                    }
+                    else {
+                        if ($("#TestTitle").val().trim() == "") {
+                            $(".validation-summary-errors").append(
+                                "<li>" + "The Test Title field is required" + "</li>");
+                        }
+                        if ($("#Description").val().trim() == "") {
+                            $(".validation-summary-errors").append(
+                                "<li>" + "The Description field is required" + "</li>");
+                        }
+                        return false;
+                    }
+
+                });
+            })
+        });
+        $('[data-toggle="tooltip"]').tooltip();
+    </script>
+    <script type="text/javascript">
+       
+       $(function () {
+
+            $(".EditLink").click(function () {
+                //var customerId = $(this).closest("tr").find("td").eq(0).html();
+                $.ajax({
+                    url: '@Url.Action("Edit", "Exam")',
+                    data: {id:1},
+                    success: function (result) {
+                        //alert(result);
+                        $("#modal-body").html(result);
+                        $("#myModal").modal('show');
+                       // $("#myModal").dialog();
+
+                    },
+                    error: function (request, status, error) {
+                        //alert(status);
+                        alertify.error(status);
+                    }
+                });
+
+            });
+        })
+       
+    </script>
+}

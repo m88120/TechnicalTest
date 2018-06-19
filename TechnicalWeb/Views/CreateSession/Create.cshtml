@@ -1,0 +1,206 @@
+﻿@model TechnicalCore.Models.CreateSessionModel
+@{
+    /**/
+
+    /**/
+
+    ViewBag.Title = "Create";
+}
+<style>
+    .text-danger ul {
+        padding: 0;
+        color: red;
+        font-size: 12px;
+        list-style: none;
+    }
+
+    .divtoken {
+        max-width: 620px;
+        margin: auto;
+    }
+
+        .divtoken input[type="button"] {
+            position: absolute;
+            right: -15px;
+            top: 0px;
+            background: #133677;
+            color: #fff;
+            width: 95px;
+            height: 34px;
+            border: none;
+        }
+</style>
+
+
+@if (ViewBag.token == null)
+{
+    <h2>Create</h2>
+
+    <hr />
+    using (Html.BeginForm("Create", "CreateSession", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "createformPost" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.FirstName, new { @class = "col-md-3 control-label" })
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.LastName, new { @class = "col-md-3 control-label" })
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email, new { @class = "col-md-3 control-label" })
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Notes, new { @class = "col-md-3 control-label" })
+            <div class="col-md-9">
+                @Html.TextAreaFor(m => m.Notes, new { @class = "form-control", @style = "max-width:none" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Source, new { @class = "col-md-3 control-label" })
+            <div class="col-md-9">
+                @Html.DropDownListFor(x => x.Source, ViewBag.Sources as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.TestId, new { @class = "col-md-3 control-label" })
+            <div class="col-md-9">
+                @Html.DropDownListFor(x => x.TestId, ViewBag.Exams as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control" })
+            </div>
+        </div>       
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-9">
+                @*<input type="button" class="btn btn-blue" value="Create" data-toggle="modal" data-target="#myModal" />*@
+                <input type="button" class="btn btn-blue" id="btnSubmit" value="Create" />
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.ValidationSummary("", new { @class = "text-danger validation-summary-errors col-md-offset-3 col-md-9" })
+        </div>
+    }
+}
+else
+{
+    <div class="divtoken">
+        <h2>Token Url</h2>
+        <hr />
+        <div class="form-group">
+            @{
+                var url = "";
+
+                if (@Context.Request.Host.Host.ToString() == "urtestsite.com")
+                {
+                    url = "http://" + @Context.Request.Host.Host.ToString() + ":" + @Context.Request.Host.Port + "/Createsession/token/" + @ViewBag.token;
+                }
+                else
+                {
+                    url = "http://" + @Context.Request.Host.Host.ToString() + "/Createsession/token/" + @ViewBag.token;
+                }
+                var token = @ViewBag.token;
+            }
+            @*@Html.Label("Link to sent", new { @class = "col-md-12 control-label" })*@
+            <label class="col-md-12 control-label">Link to sent</label>
+            <div class="col-md-12">
+                <input type="text" id="txtUrl" value="@url" style="min-width: 620px;border: 1px dashed #999;border-radius: 0;" class="form-control" />
+                <input type="button" onclick="Copyurl()" value="Copy url" />
+            </div>
+
+        </div>
+    </div>
+}
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#428bca; color:#fff; border-radius:6px;">
+                <button type="button" class="close" data-dismiss="modal" style="color:#fff; opacity:1">&times;</button>
+                <h4 class="modal-title">Create Session</h4>
+            </div>
+            <div class="modal-body">
+                <p>This user has taken a test before.</p>
+            </div>
+            <div class="modal-footer">
+
+                @*@Html.ActionLink("Continue", "Create", "CreateSession", new { examdetailId = 0 }, new { @class = "btn-blue" })*@
+                <a href="javascript:void(0)" onclick="ContinuePost();" class="btn-blue" data-dismiss="modal">Continue</a>
+                <a href="javascript:void(0)" class="btn-blue" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="clearfix"></div>
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(function () {
+                $('#btnSubmit').click(function (event) {
+                    var ss = $('#Source').val();
+                  
+                    if (($('#FirstName').val() == '') || ($('#LastName').val() == '') || ($('#Email').val() == '') || (ss == ''))
+                    {
+                        $("#createformPost").submit();
+                        return false;
+                    }
+
+                    event.preventDefault();
+                    var CreateSessionModel = {
+                        FirstName: $('#FirstName').val(),
+                        LastName: $('#LastName').val(),
+                        Email: $('#Email').val(),
+                        Notes: $('#Notes').val(),
+                        Source: $('#Source').val(),
+                        TestId: $('#TestId').val(),
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: "/CreateSession/CheckUser",
+                       // data: JSON.stringify({ "CreateSessionModel": CreateSessionModel }) ,
+                        data: CreateSessionModel,
+                        traditional: true,
+                        dataType: "json",
+                       // contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            if (data.data == true) {
+                                $("#myModal").modal('show');
+                            }
+                            else {
+                                $("#createformPost").submit();
+                            }
+                        },
+                        error: function () {
+                            alert("Error occured!!")
+                        }
+                    });
+                });
+            });
+        });
+
+        function ContinuePost() {
+            $("#createformPost").submit();
+        }
+        function Copyurl() {
+            /* Get the text field */
+            var copyText = document.getElementById("txtUrl");
+            /* Select the text field */
+            copyText.select();
+            /* Copy the text inside the text field */
+            document.execCommand("Copy");
+            /* Alert the copied text */
+            //alert("Copied the url: " + copyText.value);
+        }
+
+    </script>
+}
+

@@ -1,0 +1,105 @@
+﻿@model IEnumerable<TechnicalCore.Models.ExamStatusModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    .main-width {
+        width: 70%;
+        margin: 0 auto;
+    }
+
+    .tdClass-button {
+        width: 15%;
+    }
+</style>
+<h2>Administration</h2>
+<div class="main-width">
+    <input type="button" class="btn-blue" style="float:right; margin-bottom:15px; margin-right:15px;" id="btnCreate" value="Add new Status" />
+    <div id="grdRecords">
+        @Html.Partial("_RecordView", Model)
+    </div>
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" style="width:30%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#428bca; color:#fff; border-radius:5px;">
+                <button type="button" class="close" data-dismiss="modal" style="color:#fff; opacity:1">&times;</button>
+                <h4 class="modal-title">Create/Update Status</h4>
+            </div>
+            <div id="modal-body" class="modal-body">
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+@section Scripts{
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            $('#tblStatusList').dataTable({
+                "processing": true, // for show progress bar
+                "paging": false,
+                "filter": false,
+                // this is for disable filter (search box)
+                "order": []
+            });
+        });
+    </script>
+    <script>
+        function deleteStatus(Id) {
+            if (confirm("Are you sure you want to delete the test")) {
+                window.location.href = '@Url.Action("Delete")' + "/" + Id;
+                alertify.success("Status deleted successfully");
+            }
+        }
+         function editStatus(Id) {
+           $.ajax({
+                    url: '@Url.Action("Edit", "ExamStatus")',
+                    data: { id: Id},
+                    success: function (result) {
+                        //alert(result);
+                        $("#modal-body").html(result);
+                        $("#myModal").modal('show');
+                       // $("#myModal").dialog();
+
+                    },
+                    error: function (request, status, error) {
+                        //alert(status);
+                        alertify.error(status);
+                    }
+                });
+        }
+        $(document).ready(function () {
+            $(function () {
+                $('#btnSave').click(function (event) {
+                    $("#frmSubmit").submit();
+                    alertify.success("Status saved successfully");
+                    return false;
+                });
+            })
+            $(function () {
+                $('#btnCreate').click(function (event) {
+                    $.ajax({
+                    url: '@Url.Action("Create", "ExamStatus")',
+                    success: function (result) {
+                        $("#modal-body").html(result);
+                        $("#myModal").modal('show');
+                       // $("#myModal").dialog();
+
+                    },
+                    error: function (request, status, error) {
+                       // alert(status);
+                        alertify.error(status);
+                    }
+                    });
+                });
+            })          
+        });       
+      
+        $('[data-toggle="tooltip"]').tooltip();
+    </script>
+    
+}

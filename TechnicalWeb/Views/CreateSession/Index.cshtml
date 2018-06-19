@@ -1,0 +1,551 @@
+﻿@model TechnicalCore.Models.AdministrationList
+@using TechnicalCore.Utilities;
+@{
+    var Fail = ADAuthUtils.AppSettings.Fail;
+    var Hired = ADAuthUtils.AppSettings.Hired;
+    var RequestOnsite = ADAuthUtils.AppSettings.RequestOnsite;
+}
+<style>
+    .chkUpdateRecords {
+    width:20px;height:20px;
+    }
+    .arrow {
+        cursor: pointer;
+    }
+
+    .noteclass {
+        max-width: 100px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .form-control-Filter {
+        margin-right: 15px;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.428571429;
+        color: #555555;
+        vertical-align: middle;
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+        transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    }
+
+    .No_Record {
+        display: inline-block;
+        text-align: center;
+        width: 100%;
+        padding: 60px 0;
+        border: 1px solid #8080801c;
+    }
+
+    #tblStud_wrapper.container-fluid {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+    #btnDeleteAll {
+        float: left;
+        line-height: normal;
+        display: inline-block;
+        margin: 4px 0 0 0;
+        width: auto;
+    }
+
+    body.printingContent > * {
+        display: none !important; /* hide everything in body when in print mode*/
+    }
+
+    .printContainer {
+        display: block !important; /* Override the rule above to only show the printables*/
+        position: fixed;
+        z-index: 99999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<style type="text/css" media="print">
+    #printDiv {
+        display: block !important;
+    }
+
+
+    .no-print {
+        display: none;
+    }
+</style>
+@*<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.css" rel="stylesheet" />*@
+<style>
+    .note-toolbar panel-heading {
+        display: none !important;
+    }
+
+    .loader-outer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: rgba(0,0,0,0.5);
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        z-index:99999;
+    }
+
+    .loader-box {
+        position: absolute;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+</style>
+<h2 class="no-print">Administration</h2>
+
+@using (Html.BeginForm("Index", "CreateSession", FormMethod.Post, new { id = "formSession", @class = "no-print" }))
+{
+    <a href="#" id="btnDeleteAll" class="btn-blue" style="display:none;">Delete Selected</a>
+    @Html.DropDownList("ddlStatusForAll", new SelectList(ViewBag.ExamStatuses, "Value", "Text"), "Update Status for all Selected",
+                                                                                      new { @class = "form-control-Filter", @style = "height:30px;font-size:13px;margin-left:10px;display:none;", @onchange = "onChangeStatusDropdown(this);" })
+    <div style="float:right; padding-bottom:10px;">
+        Source:
+        @Html.DropDownList("AdminSourceId", ViewBag.Sources as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control-Filter", @style = "height:30px;font-size:13px", @onchange = "onChange();" })
+        Hide Fail:
+        @{
+            if (Convert.ToBoolean(Model.showAll) == true)
+            {
+                <input type="checkbox" name="chkshowAll" onclick="onChange();" value="true" checked="checked" style="margin-right:15px;" />
+            }
+            else
+            {
+                <input type="checkbox" name="chkshowAll" onclick="onChange();" value="false" style="margin-right:15px;" />
+            }
+        }
+        Hide Hired:
+        @{
+            if (Convert.ToBoolean(Model.showHired) == true)
+            {
+                <input type="checkbox" name="chkshowHired" onclick="onChange();" value="true" checked="checked" style="margin-right:15px;" />
+            }
+            else
+            {
+                <input type="checkbox" name="chkshowHired" onclick="onChange();" value="false" style="margin-right:15px;" />
+            }
+        }
+        Request On Site:
+        @{
+            if (Convert.ToBoolean(Model.showRequestOnSite) == true)
+            {
+                <input type="checkbox" name="chkRequestOnSite" onclick="onChange();" value="true" checked="checked" style="margin-right:15px;" />
+            }
+            else
+            {
+                <input type="checkbox" name="chkRequestOnSite" onclick="onChange();" value="false" style="margin-right:15px;" />
+            }
+        }
+        @Html.ActionLink("Create new Test Session", "Create", null, null, new { @class = "btn-blue" })
+    </div>
+
+    <input type="hidden" id="ListSort" name="ListSort" value="@Model.ListSort" />
+
+    <input type="hidden" id="ListOrder" name="ListOrder" value="@Model.ListOrder" />
+
+    <input type="hidden" id="CheckDefault" name="CheckDefault" value="@Model.CheckDefault" />
+
+    <input type="hidden" id="showAll" name="showAll" value="@Model.showAll" />
+
+    <input type="hidden" id="showHired" name="showHired" value="@Model.showHired" />
+
+    <input type="hidden" id="showRequestOnSite" name="showRequestOnSite" value="@Model.showRequestOnSite" />
+    @*@Html.HiddenFor(x => Model.CheckDefault);*@
+
+    <div id="grdRecords">
+        @Html.Partial("RecordsView", Model.lstAdministration)
+    </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog" style="width:70%;">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header no-print" style="background-color:#428bca; color:#fff; border-radius:5px;">
+                    <button type="button" class="close" data-dismiss="modal" style="color:#fff; opacity:1">&times;</button>
+                    <h4 class="modal-title">View/Edit Session</h4>
+                </div>
+                <div id="modal-body" class="modal-body">
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+}
+<div id='loader' class="loader-outer" style='display: none;'>
+    <div class="loader-box">
+        <img src='~/images/35.gif' />
+    </div>
+</div>
+@section Scripts{
+    @*@Scripts.Render("~/bundles/jquery")*@
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js"></script>
+
+
+    <script>
+
+        function Sort(id) {
+            $("#ListSort").val(id);
+            //if (order == "") { order = "desc"; } else { order = "asc"; }
+            var order = $("#ListOrder").val();
+            if (order == "desc" || order == "") { $("#ListOrder").val("asc"); } else { $("#ListOrder").val("desc");}
+            var CheckedHired = $('input[name^=chkshowHired]').prop("checked");
+            var CheckedFail = $('input[name^=chkshowAll]').prop("checked");
+            // var ddl = $('#ddlSource').val();
+            // var ddl = $('#ddlSource').val();
+            $("#CheckDefault").val(1);
+            $("#showHired").val(CheckedHired);
+            $("#showAll").val(CheckedFail);
+            $("#formSession")[0].submit();
+        }
+        function onChange() {
+            var CheckedHired = $('input[name^=chkshowHired]').prop("checked");
+            var CheckedFail = $('input[name^=chkshowAll]').prop("checked");
+            var CheckedRequestOnSite = $('input[name^=chkRequestOnSite]').prop("checked");
+
+            $("#CheckDefault").val(1);
+            $("#showHired").val(CheckedHired);
+            $("#showAll").val(CheckedFail);
+            $("#showRequestOnSite").val(CheckedRequestOnSite);
+            $("#formSession")[0].submit();
+        }
+        function deleteTest(testId) {
+            if (confirm("Are you sure you want to delete the test")) {
+                //window.location.href = '@Url.Action("Delete")' + "/" + testId;
+                    $.ajax({
+                         url: '@Url.Action("Delete")',
+                         data: { 'id': testId},
+                        async: true,
+                        method: 'Get',
+                        success: function (result) {
+                        if (result.isSuccess) {
+                            var id = 'tr_' + testId;
+                            if ($('#' + id).hasClass('selected')) {
+                                $('#' + id).removeClass('selected');
+                            }
+                            else {
+                                table.$('tr.selected').removeClass('selected');
+                                $('#' + id).addClass('selected');
+                            }
+                            table.row('.selected').remove().draw(false);
+                            alertify.success('Record deleted successfully.');
+                        }
+                        if (!result.isSuccess) {
+                            //alert("Error occurred");
+                            alertify.error('Error occurred');
+                        }
+                    },
+                        error: function (err) {
+                            alertify.error('Error occurred');
+                            console.log(err);
+                        }
+                    });
+
+             }
+        }
+        function viewTest(testId) {
+            $("#loader").show();
+           $.ajax({
+                    url: '@Url.Action("ViewRecord", "CreateSession")',
+                    data: { id: testId},
+                    success: function (result) {
+                        $("#modal-body").html(result);
+                        $("#myModal").modal('show');
+                          $("#loader").hide();
+                       // $("#myModal").dialog();
+
+                    },
+                    error: function (request, status, error) {
+                        //alert(status);
+                        $("#loader").hide();
+                        alertify.error(status);
+                    }
+                });
+        }
+         function editTest(testId) {
+             //$("#btnEditButton").attr("disabled", "disabled");
+             $("#loader").show();
+           $.ajax({
+                    url: '@Url.Action("Edit", "CreateSession")',
+                    data: { id: testId},
+                    success: function (result) {
+                        //alert(result);
+                        $("#modal-body").html(result);
+
+                        setTimeout(function () {
+                            $("#myModal").modal('show');
+                            $("#loader").hide();
+                        }, 100);
+
+                       // $("#myModal").dialog();
+
+                    },
+                    error: function (request, status, error) {
+                         $("#loader").hide();
+                        alertify.error(status);
+                    }
+                });
+        }
+         function hideStatusRows(obj, status) {
+             var isShowAllVal = $('input[name="chkshowAll"]').val();
+                    var ishowHiredVal = $('input[name="chkshowHired"]').val();
+                    var isRequestOnSiteVal = $('input[name="chkRequestOnSite"]').val();
+
+                        if (isRequestOnSiteVal == "true" && ishowHiredVal == "true" && isShowAllVal == "true" && (status == @RequestOnsite || status == @Hired || status == @Fail)) {
+                            $(obj).parent().parent('tr').hide();
+                        }
+                        else if (isRequestOnSiteVal == "false" && ishowHiredVal == "false" && isShowAllVal == "false" && (status != @RequestOnsite && status != @Hired && status != @Fail)) {
+                            $(obj).parent().parent('tr').hide();
+                        }
+                        else if (isRequestOnSiteVal == "true" && ishowHiredVal == "false" && isShowAllVal == "false" && status != @Hired && status != @Fail) {
+                            $(obj).parent().parent('tr').hide();
+                        }
+                        else if (isRequestOnSiteVal == "false" && ishowHiredVal == "true" && isShowAllVal == "false" && status != @RequestOnsite && status != @Fail) {
+                            $(obj).parent().parent('tr').hide();
+                        }
+                        else if (isRequestOnSiteVal == "false" && ishowHiredVal == "false" && isShowAllVal == "true" && status != @RequestOnsite && status != @Hired) {
+                            $(obj).parent().parent('tr').hide();
+                        }
+                        else if (isRequestOnSiteVal == "true" && ishowHiredVal == "true" && isShowAllVal == "false" && status != @Fail) {
+                            $(obj).parent().parent('tr').hide();
+                        }
+                        else if (isRequestOnSiteVal == "true" && isShowAllVal == "true" && ishowHiredVal == "false" && status != @Hired) {
+                            $(obj).parent().parent('tr').hide();
+                        }
+                        else if (isRequestOnSiteVal == "false" && isShowAllVal == "true" && ishowHiredVal == "true" && status != @RequestOnsite) {
+                            $(obj).parent().parent('tr').hide();
+                        }
+                        else {
+
+                        }
+         }
+        function onChangeStatusDropdown(obj) {
+            var status = obj.value;
+            if (status == "") { }
+            else {
+                var selectedIds = [];
+                $('input[class="chkUpdateRecords"]:checked').each(function () {
+                    selectedIds.push($(this).data('myid'));
+                    $(this).closest('tr').addClass('selected');
+                    $(this).closest('tr').children().find("#ddlStatus").val(status);
+                    hideStatusRows(this, status);
+                    //if (ishowHiredVal == "false" && isRequestOnSiteVal == "false" && status != "3" && status != "4") {
+                    //    $(this).closest('tr').hide();
+                    //}
+                    //if (!isRequestOnSiteVal && !ishowHiredVal && !isShowAllVal && status == 1) {
+                    //    $(this).closest('tr').hide();
+                    //}
+                    //alert($(this).closest('tr').children().find("#ddlStatus").val());
+                });
+                if (selectedIds.length > 0)
+                    {
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("UpdateStatusForMultipleRecords")',
+                            data: { Ids: selectedIds, statusId: status },
+                            // data: JSON.stringify({ Ids: selectedIds }),
+                             //async: true,
+                             success: function (result) {
+                                 if (result.isSuccess) {
+                                     $('input[class="chkUpdateRecords"]').removeAttr('checked');
+                                     $(".selected").each(function () {
+                                         ///table.row('.selected').remove().draw(false);
+                                     })
+                                     $("#btnDeleteAll").hide();
+                                     $("#ddlStatusForAll").hide();
+                                     $('#ddlStatusForAll').val('');
+                                     alertify.success('Status for selected records updated successfully.');
+
+                                }
+                                if (!result.isSuccess) {
+                                   // alert("Error occurred");
+                                    alertify.error('Error occurred');
+                                }
+                            },
+                             error: function (err) {
+                                 alertify.error(err);
+                                    console.log(err);
+                                }
+                        });
+                    }
+
+            }
+        }
+        function updateStatus(id, obj) {
+            var status = obj.value;
+           // alert(status);
+          $.ajax({
+                url: '@Url.Action("ExamStatusUpdate")',
+                data: { 'examId': id, 'status': status },
+                async: true,
+                method: 'POST',
+                success: function (result) {
+                    if (result.isSuccess) {
+                        hideStatusRows(obj, status);
+                        alertify.success('Status updated successfully.');
+                    }
+                    if (!result.isSuccess) {
+                        alertify.error('Error occurred');
+                        //alert("Error occurred");
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+        $("#tblStud").DataTable({
+            "processing": true, // for show progress bar
+
+            "paging": false,
+            "filter": false,
+            // this is for disable filter (search box)
+            "order": []
+        });
+        var table = $('#tblStud').DataTable();
+
+        function UpdateTest(testId) {
+            $(".validation-summary-errors").empty();
+
+            if ($("#FirstName").val().trim() == "") {
+                $(".validation-summary-errors").append(
+                    "<li>" + "FirstName field is required" + "</li>");
+                return false;
+            }
+            if ($("#LastName").val().trim() == "") {
+                $(".validation-summary-errors").append(
+                    "<li>" + "LastName field is required" + "</li>");
+                return false;
+            }
+           $.ajax({
+                    url: '@Url.Action("Edit", "CreateSession")',
+                    type: 'POST',
+                    data: $('#frmSessionUpdate').serialize(),
+                    success: function (status) {
+                        var id = 'tr_' + testId;
+                        if ($('#' + id).hasClass('selected')) {
+                            $('#' + id).removeClass('selected');
+                        }
+                        else {
+                            table.$('tr.selected').removeClass('selected');
+                            $('#' + id).addClass('selected');
+                        }
+                        var FirstName = $("#FirstName").val();
+                        var LastName = $("#LastName").val();
+                        var Notes = $("#Notes").val();
+                        var ExamStatusId = $("#ExamStatus").val();
+                        var ExamStatus = $('#ExamStatus option:selected').text();
+                       // alert(ExamStatus);
+                        var SourceId = $("#Source").val();
+                        var Source = $('#Source option:selected').text();
+                       // alert(Source);
+
+                       // alert(Notes);
+                        $('#' + id).find("td:eq(1)").text(FirstName + ' ' + LastName);
+
+                        $('#' + id).find("td:eq(6)").text(Source);
+                       // var row_index = $('#' + id).index();
+                       //alert(row_index);
+
+                        ///table.cell(row_index, 6).data(Source).draw();
+
+                        $('#' + id).find("td:eq(7)").text(Notes);
+                        $('#' + id).find("td:eq(8)").find("#ddlStatus").val(ExamStatusId);
+
+                        table.row('.selected').draw(false);
+                        table.$('tr.selected').removeClass('selected');
+                        alertify.success('This record updated successfully.');
+                        $("#myModal").modal('hide');
+                    },
+                    error: function () {
+                        //alert("Error");
+                        alertify.error('Error occurred');
+                        return false;
+                    }
+                });
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".chkUpdateRecords").click(function () {
+                var checkedCount = $('input[class="chkUpdateRecords"]:checked').length;
+                if (checkedCount > 0) { $("#btnDeleteAll").show(); $("#ddlStatusForAll").show(); } else { $("#btnDeleteAll").hide(); $("#ddlStatusForAll").hide(); }
+            });
+            $("#btnDeleteAll").click(function () {
+                if (confirm("Are you sure you want to delete the test")) {
+                   // var selectedIds = new Array();
+                    var selectedIds = [];
+                    $('input[class="chkUpdateRecords"]:checked').each(function () {
+                        selectedIds.push($(this).data('myid'));
+                        $(this).closest('tr').addClass('selected');
+                    });
+
+                    if (selectedIds.length > 0)
+                    {
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("DeleteMultipleRecords")',
+                            data: { Ids: selectedIds },
+                            // data: JSON.stringify({ Ids: selectedIds }),
+                             //async: true,
+                             success: function (result) {
+                                 if (result.isSuccess) {
+                                     $(".selected").each(function () {
+                                         table.row('.selected').remove().draw(false);
+                                     })
+                                     $("#btnDeleteAll").hide();
+                                     $("#ddlStatusForAll").hide();
+                                     alertify.success('Selected records deleted successfully.');
+                                }
+                                 if (!result.isSuccess) {
+                                     alertify.error('Error occurred');
+                                    //alert("Error occurred");
+                                }
+                            },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['undo', 'redo', 'bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph', 'style']],
+                    ['height', ['height']],
+                    ['insert', ['table', 'hr']],
+                    ['misc', ['fullscreen', 'codeview', 'help']]
+
+                ]
+            });
+        });
+
+        $('[data-toggle="tooltip"]').tooltip();
+    </script>
+}

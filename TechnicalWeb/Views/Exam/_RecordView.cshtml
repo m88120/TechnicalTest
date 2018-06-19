@@ -1,0 +1,72 @@
+﻿    @model List<TechnicalCore.Models.ExamModel>
+    <style>
+        .DescWidth {
+            padding:8px !important;
+        }
+        #tblStud td {
+            border: none;
+            padding: 8px;
+            text-align: left;
+            color: #333;
+            padding: 14px 10px;
+            overflow: hidden;
+            line-height: 1.6em;
+            vertical-align: middle;
+            font-size: 12px;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+    <table border="0" cellpadding="0" cellspacing="0" id="tblStud" class="table table-striped table-bordered dt-responsive nowrap">
+        <thead>
+            <tr>
+                <th>Test Title</th>               
+                <th></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.TestTitle
+                </td>
+                @*<td class="DescWidth">
+                    @{ var desc = item.Description.ToString().Length > 500 ? item.Description.ToString().Substring(0, 500) + "......" : Convert.ToString(item.Description);}
+                    @desc
+                </td>*@
+                @*<td class="DescWidth">
+                    @{ var QuestionsCount = item.Questions == null ? 0 : item.Questions.Count;}
+                    @QuestionsCount
+                
+                </td>*@
+                <td style="width:10%;">
+                    <a onclick="deleteTest(@item.TestId)">Delete</a> <a onclick="editTest(@item.TestId)">Edit</a>
+
+                </td>
+
+            </tr>
+        }
+    </table>
+
+<style>
+    #tblStud td {
+        padding: 5px;
+    }
+
+        #tblStud td a {
+            color: #fff;
+            background-color: #428bca;
+            cursor: pointer;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+    #tblStud th {
+        background: #666;
+        color: #fff;
+        border: none;
+        text-align: left;
+        font-weight: 300;
+        font-size: 12px;
+    }
+</style>

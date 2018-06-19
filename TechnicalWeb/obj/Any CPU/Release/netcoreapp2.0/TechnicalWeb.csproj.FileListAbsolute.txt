@@ -1,0 +1,14 @@
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Any CPU\Release\netcoreapp2.0\TechnicalWeb.deps.json
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Any CPU\Release\netcoreapp2.0\TechnicalWeb.runtimeconfig.json
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Any CPU\Release\netcoreapp2.0\TechnicalWeb.runtimeconfig.dev.json
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Any CPU\Release\netcoreapp2.0\TechnicalWeb.dll
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Any CPU\Release\netcoreapp2.0\TechnicalWeb.pdb
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Any CPU\Release\netcoreapp2.0\TechnicalCore.dll
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Any CPU\Release\netcoreapp2.0\TechnicalCore.pdb
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Any CPU\Release\netcoreapp2.0\TechnicalCore.dll.config
+E:\Projects\TechnicalWeb\TechnicalWeb\obj\Any CPU\Release\netcoreapp2.0\TechnicalWeb.csproj.CoreCompileInputs.cache
+E:\Projects\TechnicalWeb\TechnicalWeb\obj\Any CPU\Release\netcoreapp2.0\TechnicalWeb.AssemblyInfoInputs.cache
+E:\Projects\TechnicalWeb\TechnicalWeb\obj\Any CPU\Release\netcoreapp2.0\TechnicalWeb.AssemblyInfo.cs
+E:\Projects\TechnicalWeb\TechnicalWeb\obj\Any CPU\Release\netcoreapp2.0\TechnicalWeb.dll
+E:\Projects\TechnicalWeb\TechnicalWeb\obj\Any CPU\Release\netcoreapp2.0\TechnicalWeb.pdb
+E:\Projects\TechnicalWeb\TechnicalWeb\obj\Any CPU\Release\netcoreapp2.0\TechnicalWeb.csprojResolveAssemblyReference.cache

@@ -1,0 +1,12 @@
+E:\Projects\TechnicalWeb\TechnicalCore\bin\Release\netstandard2.0\TechnicalCore.dll.config
+E:\Projects\TechnicalWeb\TechnicalCore\bin\Release\netstandard2.0\TechnicalCore.deps.json
+E:\Projects\TechnicalWeb\TechnicalCore\bin\Release\netstandard2.0\TechnicalCore.dll
+E:\Projects\TechnicalWeb\TechnicalCore\bin\Release\netstandard2.0\TechnicalCore.pdb
+E:\Projects\TechnicalWeb\TechnicalCore\obj\Release\netstandard2.0\TechnicalCore.csprojResolveAssemblyReference.cache
+E:\Projects\TechnicalWeb\TechnicalCore\obj\Release\netstandard2.0\TechnicalCore.csproj.CoreCompileInputs.cache
+E:\Projects\TechnicalWeb\TechnicalCore\obj\Release\netstandard2.0\TechnicalCore.AssemblyInfoInputs.cache
+E:\Projects\TechnicalWeb\TechnicalCore\obj\Release\netstandard2.0\TechnicalCore.AssemblyInfo.cs
+E:\Projects\TechnicalWeb\TechnicalCore\obj\Release\netstandard2.0\TechnicalCore.dll
+E:\Projects\TechnicalWeb\TechnicalCore\obj\Release\netstandard2.0\TechnicalCore.pdb
+E:\Projects\TechnicalWeb\TechnicalCore\bin\Release\netstandard2.0\Microsoft.AspNetCore.Server.Kestrel.Core.dll
+E:\Projects\TechnicalWeb\TechnicalCore\bin\Release\netstandard2.0\Microsoft.AspNetCore.Server.Kestrel.Core.xml

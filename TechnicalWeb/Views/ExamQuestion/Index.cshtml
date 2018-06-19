@@ -1,0 +1,33 @@
+﻿@model List<TechnicalCore.Models.ExamQuestionModel>
+<style>
+    .noteclass {
+        max-width: 100px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<h2>@ViewBag.TestName</h2>
+
+@using (Html.BeginForm("Index", "CreateSession", FormMethod.Post, new { id = "formSession" }))
+{
+    <div style="float:right; padding-bottom:10px;">
+        @Html.ActionLink("Create new Question", "Create", null, new { @class = "btn-blue" })
+    </div>
+}
+
+
+<div id="grdRecords">
+    @Html.Partial("_RecordView", Model)
+</div>
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+    <script>
+    function deleteQuestion(questionId) {
+        if (confirm("Are you sure you want to delete the question")) {
+            window.location.href ='@Url.Action("Delete")' + "/" + testId;
+        }
+        }        
+    </script>
+}

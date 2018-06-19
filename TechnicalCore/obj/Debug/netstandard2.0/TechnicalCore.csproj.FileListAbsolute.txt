@@ -1,0 +1,24 @@
+E:\Projects\TechnicalWeb\TechnicalCore\bin\Debug\netstandard2.0\TechnicalCore.dll.config
+E:\Projects\TechnicalWeb\TechnicalCore\bin\Debug\netstandard2.0\TechnicalCore.deps.json
+E:\Projects\TechnicalWeb\TechnicalCore\bin\Debug\netstandard2.0\TechnicalCore.dll
+E:\Projects\TechnicalWeb\TechnicalCore\bin\Debug\netstandard2.0\TechnicalCore.pdb
+E:\Projects\TechnicalWeb\TechnicalCore\bin\Debug\netstandard2.0\Microsoft.AspNetCore.Server.Kestrel.Core.dll
+E:\Projects\TechnicalWeb\TechnicalCore\bin\Debug\netstandard2.0\Microsoft.AspNetCore.Server.Kestrel.Core.xml
+E:\Projects\TechnicalWeb\TechnicalCore\obj\Debug\netstandard2.0\TechnicalCore.csproj.CoreCompileInputs.cache
+E:\Projects\TechnicalWeb\TechnicalCore\obj\Debug\netstandard2.0\TechnicalCore.AssemblyInfoInputs.cache
+E:\Projects\TechnicalWeb\TechnicalCore\obj\Debug\netstandard2.0\TechnicalCore.AssemblyInfo.cs
+E:\Projects\TechnicalWeb\TechnicalCore\obj\Debug\netstandard2.0\TechnicalCore.dll
+E:\Projects\TechnicalWeb\TechnicalCore\obj\Debug\netstandard2.0\TechnicalCore.pdb
+E:\Projects\TechnicalWeb\TechnicalCore\obj\Debug\netstandard2.0\TechnicalCore.csprojResolveAssemblyReference.cache
+G:\Upwork Project\core\Core\TechnicalCore\bin\Debug\netstandard2.0\TechnicalCore.dll.config
+G:\Upwork Project\core\Core\TechnicalCore\bin\Debug\netstandard2.0\TechnicalCore.deps.json
+G:\Upwork Project\core\Core\TechnicalCore\bin\Debug\netstandard2.0\TechnicalCore.dll
+G:\Upwork Project\core\Core\TechnicalCore\bin\Debug\netstandard2.0\TechnicalCore.pdb
+G:\Upwork Project\core\Core\TechnicalCore\bin\Debug\netstandard2.0\Microsoft.AspNetCore.Server.Kestrel.Core.dll
+G:\Upwork Project\core\Core\TechnicalCore\bin\Debug\netstandard2.0\Microsoft.AspNetCore.Server.Kestrel.Core.xml
+G:\Upwork Project\core\Core\TechnicalCore\obj\Debug\netstandard2.0\TechnicalCore.csprojResolveAssemblyReference.cache
+G:\Upwork Project\core\Core\TechnicalCore\obj\Debug\netstandard2.0\TechnicalCore.csproj.CoreCompileInputs.cache
+G:\Upwork Project\core\Core\TechnicalCore\obj\Debug\netstandard2.0\TechnicalCore.AssemblyInfoInputs.cache
+G:\Upwork Project\core\Core\TechnicalCore\obj\Debug\netstandard2.0\TechnicalCore.AssemblyInfo.cs
+G:\Upwork Project\core\Core\TechnicalCore\obj\Debug\netstandard2.0\TechnicalCore.dll
+G:\Upwork Project\core\Core\TechnicalCore\obj\Debug\netstandard2.0\TechnicalCore.pdb

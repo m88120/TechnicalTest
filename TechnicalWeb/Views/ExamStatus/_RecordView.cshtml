@@ -1,0 +1,64 @@
+﻿@model List<TechnicalCore.Models.ExamStatusModel>
+    <style>
+        .DescWidth {
+            padding: 8px !important;
+        }
+
+        #tblStatusList td {
+            border: none;
+            padding: 8px;
+            text-align: left;
+            color: #333;
+            padding: 14px 10px;
+            overflow: hidden;
+            line-height: 1.6em;
+            vertical-align: middle;
+            font-size: 12px;
+            border-bottom: 1px solid #ccc;
+        }
+       
+    </style>
+    <table border="0" cellpadding="0" cellspacing="0" id="tblStatusList" class="table table-striped table-bordered dt-responsive nowrap">
+        <thead>
+            <tr>
+                <th>Test Title</th>
+                <th></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+        <tr id="@item.Id">
+            <td>
+                @item.Name
+            </td>           
+            <td class="tdClass-button">
+                <a onclick="deleteStatus(@item.Id)">Delete</a> <a onclick="editStatus(@item.Id)">Edit</a>
+            </td>
+
+        </tr>
+        }
+    </table>
+
+    <style>
+        #tblStatusList td {
+            padding: 5px;
+        }
+
+            #tblStatusList td a {
+                color: #fff;
+                background-color: #428bca;
+                cursor: pointer;
+                text-decoration: none;
+                padding: 5px 10px;
+                border-radius: 4px;
+            }
+
+        #tblStatusList th {
+            background: #666;
+            color: #fff;
+            border: none;
+            text-align: left;
+            font-weight: 300;
+            font-size: 12px;
+        }
+    </style>

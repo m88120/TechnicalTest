@@ -1,0 +1,106 @@
+﻿
+@model List<TechnicalCore.Models.Administration>
+<table border="0" cellpadding="0" cellspacing="0" id="tblStud" class="table table-striped table-bordered dt-responsive nowrap">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Date Created</th>
+            <th>DateTime Test Start</th>
+            <th>DateTime Test End</th>
+            <th>TotalTime</th>
+            <th>Source</th>
+            <th>Notes</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr id="tr_@item.Id">
+            <td>
+                @*<input type="checkbox" id="chk_@item.Id" class="chkUpdate" />*@
+                @Html.CheckBox("chk"+@item.Id, new { data_myid = item.Id ,@class="chkUpdateRecords" })
+            </td>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.DateCreated
+            </td>
+            <td>
+                @*@item.TestStart*@
+                @{var TestStart = String.IsNullOrWhiteSpace(item.TestStart) ? "" : Convert.ToDateTime(item.TestStart).ToString("MM/dd/yyyy hh:mm:ss tt");}
+                @TestStart
+            </td>
+            <td>
+                @{var dt = String.IsNullOrWhiteSpace(item.TestEnd) ? "" : Convert.ToDateTime(item.TestEnd).ToString("MM/dd/yyyy hh:mm:ss tt");}
+                @dt
+                @*@item.TestEnd*@
+            </td>
+            <td data-sort="@item.TestTime.TotalDays">
+                @*@item.TestTime.TotalDays*@
+                @{ var resultTime = item.TestTime.Days > 0 ? Convert.ToInt32(item.TestTime.Hours + (24 * item.TestTime.Days)) + " hour " + item.TestTime.ToString("mm") + " min" : Convert.ToInt32(item.TestTime.Hours) + " hour " + item.TestTime.ToString("mm") + " min";}
+                @resultTime
+            </td>
+            <td>
+                @item.Source
+            </td>
+            <td class="noteclass">
+                @item.Notes
+            </td>
+            <td>
+                @*@item.ExamStatus*@
+                @Html.DropDownList("ddlStatus", new SelectList(ViewBag.ExamStatuses, "Value", "Text", @item.ExamStatus),
+                                          new { @class = "form-control", @style = "height:30px;font-size:13px", onchange = "updateStatus(" + @item.Id + ",this)" })
+            </td>
+            <td style="width:15%;">
+                @*@Html.ActionLink("View", "View", "CreateSession", new { item.Id })*@
+                <a onclick="viewTest(@item.Id)">View</a>
+                <a onclick="deleteTest(@item.Id)">Delete</a>
+                <a id="btnEditButton" onclick="editTest(@item.Id)">Edit</a>
+                @*@Html.ActionLink("Edit", "Edit", "CreateSession", new { item.Id })*@
+
+            </td>
+
+        </tr>
+    }
+</table>
+
+<style>
+    #tblStud td {
+        padding: 5px;
+    }
+
+    #tblStud td {
+        border: none;
+        padding: 8px;
+        text-align: left;
+        color: #333;
+        padding: 14px 10px;
+        overflow: hidden;
+        line-height: 1.6em;
+        vertical-align: middle;
+        font-size: 12px;
+        border-bottom: 1px solid #ccc;
+    }
+
+        #tblStud td a {
+            color: #fff;
+            background-color: #428bca;
+            cursor: pointer;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+    #tblStud th {
+        background: #666;
+        color: #fff;
+        border: none;
+        text-align: left;
+        font-weight: 300;
+        font-size: 12px;
+        cursor: pointer;
+    }
+</style>

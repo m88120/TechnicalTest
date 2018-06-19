@@ -1,0 +1,62 @@
+﻿@model TechnicalCore.Models.ExamStatusModel
+
+
+@using (Html.BeginForm("Create", "ExamStatus", FormMethod.Post, new { @class = "form-horizontal", @id = "frmStatusSubmit", @style = "max-width:330px !important;" }))
+{
+@Html.AntiForgeryToken()
+@Html.HiddenFor(x => x.Id)
+<div style="margin-top:15px;">
+    <div class="form-group">
+
+        <div class="col-md-2">
+            @Html.Label("lblTestTitle", "Status", new { @class = "control-label" })
+        </div>
+        <div class="col-md-10">
+            @Html.TextBoxFor(a => Model.Name, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            @Html.ValidationSummary("", new { @class = "text-danger validation-summary-errors col-md-12 margin-left-validation" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row" style="float:right; margin-right:15px;">
+            <input type="submit" value="Save" id="btnSaveStatus" class="btn-blue" data-dismiss="modal" />
+            <input type="button" value="Cancel" id="btnCancelStatus" class="btn-blue" data-dismiss="modal" />
+        </div>
+    </div>
+</div>
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#btnSaveStatus').click(function (event) {          
+            $(".validation-summary-errors").empty();
+
+            if ($("#Name").val().trim() == "") {
+                $(".validation-summary-errors").append(
+                    "<li>" + "The Status field is required" + "</li>");
+                return false;
+            }            
+            if ($("#Name").val().trim() != "") {
+                $("#frmStatusSubmit").submit();
+                alertify.success("Status saved successfully");
+                return false;
+            }
+            else {
+                if ($("#Name").val().trim() == "") {
+                    $(".validation-summary-errors").append(
+                        "<li>" + "The Status field is required" + "</li>");
+                }
+                return false;
+            }
+
+        });
+    });
+</script>

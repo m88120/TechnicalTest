@@ -1,0 +1,217 @@
+﻿@model TechnicalCore.Models.ExamModel
+@{
+    int questionsCount = 0;
+    int questionsLabelCount = 1;
+}
+
+@using (Html.BeginForm("Create", "Exam", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", @id = "frmTestSubmit", @style = "max-width:830px !important;" }))
+{
+    @Html.AntiForgeryToken()
+    @*@Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.ExamSessonId)
+        @Html.HiddenFor(x => x.UniqueId)*@
+    @Html.HiddenFor(x => x.TestId)
+<div style="margin-top:15px;">
+    <div class="form-group">
+
+        <div class="col-md-2">
+            @Html.Label("lblTestTitle", "Test Title", new { @class = "control-label" })
+        </div>
+        <div class="col-md-10">
+            @Html.TextBoxFor(a => Model.TestTitle, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+
+        <div class="col-md-2">
+            @Html.Label("lblTestAttachment", "Attachment Required", new { @class = "control-label" })
+        </div>
+        <div class="col-md-10">
+            @Html.CheckBoxFor(a => Model.IsAttachmentRequired)
+        </div>
+    </div>
+    <div id='TextBoxesGroup'>
+        @if (Model.TestId > 0)
+        {
+            int i = 0;
+            foreach (var item in Model.Questions)
+            {
+                <div id="TextBoxDiv_@questionsLabelCount" class="form-group">
+                    @Html.Hidden("Questions[" + i + "].Id", item.Id)
+                    <div class="col-md-2">
+                        <label class="control-label">Question @{int quesNum = i + 1;<span>@questionsLabelCount</span>} : </label>
+                    </div>
+                    <div class="col-md-10 no_border no-print" style="margin-bottom:10px;">
+                        <textarea id="Questions[@i].Name" name="Questions[@i].Name" rows="16" class="form-control col-md-8 summernote Quest_@questionsLabelCount">@item.Name</textarea>
+                    </div>
+                </div>
+                i++;
+                questionsLabelCount++;
+            }
+            questionsCount = i;
+        }
+        else
+        {
+            questionsCount = 1;
+            questionsLabelCount = 2;
+            @*<div id="TextBoxDiv1">*@
+            <div id="TextBoxDiv_1" class="form-group">
+                <div class="col-md-2">
+                    @*@Html.Label("Question 1:", new { @class = "control-label" })*@
+                    <label class="control-label">Question 1 : </label>
+                </div>
+                <div class="col-md-10 no_border no-print" style="margin-bottom:10px;">
+                    <textarea id="Questions[0].Name" name="Questions[0].Name" rows="16" class="form-control col-md-8 summernote Quest_1"></textarea>
+                </div>
+                @*</div>*@
+            </div>
+
+        }
+    </div>
+    <div style="float:right;">
+        <input type='button' value='Add Question' id='addButton' class="btn-blue">
+        <input type='button' value='Remove Question' id='removeButton' class="btn-blue" style="display:none;">
+    </div>
+    <div class="form-group">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            @Html.ValidationSummary("", new { @class = "text-danger validation-summary-errors col-md-12 margin-left-validation" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row" style="float:right; margin-right:15px;">
+            <input type="submit" value="Save" id="btnSaveTest" class="btn-blue" data-dismiss="modal" />
+            <input type="button" value="Cancel" id="btnSaveTest" class="btn-blue" data-dismiss="modal" />
+        </div>
+    </div>
+</div>
+}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.summernote').summernote({
+            focus: true,
+            toolbar: [
+                // [groupName, [list of button]]
+                ['style', ['undo', 'redo', 'bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph', 'style']],
+                ['height', ['height']],
+                ['insert', ['table', 'hr']],
+                ['misc', ['fullscreen', 'codeview', 'help']]
+
+            ]
+        });
+    });
+    $(document).ready(function () {
+        $(function () {
+
+        })
+    });
+    $('[data-toggle="tooltip"]').tooltip();
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var counter = '@questionsCount';
+        if (counter > 0) { $("#removeButton").show(); }
+        var questionsCount = '@questionsLabelCount';
+        $("#addButton").click(function () {
+            $(".validation-summary-errors").empty();
+            $("#removeButton").show();
+            if (counter > 20) {
+                //alert("Only 20 Questions allow");
+                alertify.warning("Only 20 Questions allow!");
+                return false;
+            }
+
+            var newTextBoxDiv = $(document.createElement('div'))
+                .attr("id", 'TextBoxDiv_' + questionsCount).addClass('form-group');
+
+            newTextBoxDiv.after().html(' <div class="col-md-2"><label class="control-label">Question ' + questionsCount + ' : </label> </div>' +
+                //'<input type="text" name="textbox' + counter +
+                //'" id="textbox' + counter + '" value="" >'
+                ' <div class="col-md-10 no_border no-print" style="margin-bottom:10px;"><textarea id="Questions[' + counter + '].Name" name="Questions[' + counter +
+                '].Name" rows="16" class="form-control col-md-8 summernote question' + counter +' Quest_'+questionsCount+'"></textarea></div>'
+
+            );
+
+            newTextBoxDiv.appendTo("#TextBoxesGroup");
+            $('.question' + counter).summernote({
+                focus: true,
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['undo', 'redo', 'bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph', 'style']],
+                    ['height', ['height']],
+                    ['insert', ['table', 'hr']],
+                    ['misc', ['fullscreen', 'codeview', 'help']]
+
+                ]
+            });
+
+            counter++;
+            questionsCount++;
+        });
+
+        $("#removeButton").click(function () {
+           // alert(questionsCount);
+            $(".validation-summary-errors").empty();
+            if (questionsCount == 1) {
+                $("#removeButton").hide();
+               // alert("No more Questions to remove");
+                alertify.warning("No more Questions to remove!");
+                return false;
+            }
+            questionsCount--;
+            counter--;
+            $("#TextBoxDiv_" + questionsCount).remove();
+        });
+
+        $('#btnSaveTest').click(function (event) {
+            var countArea = $("#TextBoxesGroup").find("textarea[id^='Questions']").length;
+            $(".validation-summary-errors").empty();
+
+            if ($("#TestTitle").val().trim() == "") {
+                $(".validation-summary-errors").append(
+                    "<li>" + "The Test Title field is required" + "</li>");
+                return false;
+            }
+            if (countArea < 1) {
+                $(".validation-summary-errors").append(
+                    "<li>" + "Please add atleast one question in this exam" + "</li>");
+                return false;
+            }
+            for (var i = 0; i < countArea; i++) {
+                var k = i + 1;
+                if ($(".Quest_"+ k +"").val().trim() == "") {
+
+                    $(".validation-summary-errors").append(
+                        "<li>" + "The Question " + k +" field is required" + "</li>");
+                    return false;
+                }
+            }
+            if ($("#TestTitle").val().trim() != "") {
+                $("#frmTestSubmit").submit();
+                return false;
+            }
+            else {
+                if ($("#TestTitle").val().trim() == "") {
+                    $(".validation-summary-errors").append(
+                        "<li>" + "The Test Title field is required" + "</li>");
+                }
+                return false;
+            }
+
+        });
+    });
+</script>

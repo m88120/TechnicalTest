@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TechnicalCore.Utilities;
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextProp
+@if (HttpContextProp.HttpContext.User.Identity.IsAuthenticated)
+{
+    // var loginUser = AppUtilities.DecryptCookie();
+    string logoutUrl = ADAuthUtils.GetLogoutUrl();
+    // if (loginUser != null)
+    // {
+    var linkText = "Hello " + (HttpContextProp.HttpContext.User.Claims != null ? HttpContextProp.HttpContext.User.Claims.Last().Value : HttpContextProp.HttpContext.User.Identity.Name) + " !";
+    <ul class="nav navbar-nav">
+        <li><a href="/CreateSession/Index">Home</a></li>
+        <li><a href="/Exam/Index">Manage Exam</a></li>
+        <li><a href="/ExamStatus/Index">Manage Status</a></li>
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a href="#">@linkText</a>
+            @*@Html.ActionLink(linkText, "#", "#", routeValues: null, htmlAttributes: new { title = "Manage" })*@
+        </li>
+        <li><a href="@logoutUrl"> Log off</a></li>
+    </ul>
+    //}
+}
+

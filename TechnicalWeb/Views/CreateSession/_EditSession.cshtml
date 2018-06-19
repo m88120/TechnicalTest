@@ -1,0 +1,238 @@
+﻿@model TechnicalCore.Models.Administration
+@{
+    int i = 1;
+    int answerid = 0;
+}
+<h2 class="no-print">Edit </h2>
+<hr class="no-print" />
+<style>
+    .form-view {
+        max-width: 1000px;
+        margin: 0 auto;
+        width: 100%;
+        /*border: 1px solid #ccc;*/
+        border-bottom: none;
+        padding: 0;
+    }
+
+        .form-view .col-md-12 {
+            /*border-bottom: 1px solid #ccc;*/
+            margin-bottom: 15px;
+        }
+
+            .form-view .col-md-12, .form-view .col-md-12 .form-group {
+                overflow: hidden;
+                margin-bottom: 0;
+            }
+
+                .form-view .col-md-12 .col-md-4 {
+                    margin-bottom: 0;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                }
+
+                .form-view .col-md-12 .col-md-8 {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                }
+
+                .form-view .col-md-12 .col-md-12.no_border, .col-md-12.no_border {
+                    border: none !important;
+                    max-height: 1200px;
+                    overflow: auto;
+                    padding-top: 6px;
+                }
+
+                .form-view .col-md-12 label.col-md-12.no_border {
+                }
+
+    .margin-left-validation {
+        margin-left: -25px;
+    }
+</style>
+
+
+@using (Html.BeginForm("Edit", "CreateSession", FormMethod.Post, new { @class = "form-horizontal", role = "form",@id="frmSessionUpdate" }))
+{
+@Html.AntiForgeryToken()
+<div class="col-md-12 no-print">
+    @Html.HiddenFor(m => m.Id)
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.FirstName, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.LastName, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12  no-print">
+        <div class="form-group">
+            @Html.LabelFor(m => m.ExamStatus, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @*@Html.DropDownListFor(m => m.ExamStatus, new { @class = "form-control" })*@
+
+                @Html.DropDownListFor(m => m.ExamStatus, ViewBag.ExamStatuses as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Source, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(m => m.Source, ViewBag.Sources as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control" })
+                @*@Html.DropDownListFor(m => m.Source, new { @class = "form-control" })*@
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(x => x.TestId, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(x => x.TestId, ViewBag.Exams as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Notes, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.TextAreaFor(m => m.Notes, new { @class = "form-control", @style = "max-width:none" })
+            </div>
+        </div>
+    </div>
+
+    @if (Model.listQuestionAnswer.Count > 0)
+        {
+            foreach (var item in Model.listQuestionAnswer)
+            {
+    <div class="col-md-12">
+        <div id="TextBoxDiv_@i" class="form-group">
+            @Html.Hidden("listQuestionAnswer[" + answerid + "].ExamQuestion.QuestionId", item.Question.QuestionId)
+            <div class="col-md-4" style="padding-left:0px;">
+                <label class="control-label">Question @i: </label>
+                @*<label class="control-label">Question # @{int quesNum = i + 1; <span>@quesNum</span>} : </label>*@
+            </div>
+            <div class="col-md-8 no_border no-print" style="margin-bottom:10px;">
+                @* <textarea id="listQuestionAnswer[@answerid].Answer" name="listQuestionAnswer[@answerid].Answer" rows="16" class="form-control col-md-8 summernote Answer_@answerid">@item.Answer</textarea>*@
+                @Html.Raw(item.Question.Question.Replace(Environment.NewLine, "<br/>"))
+            </div>
+            @*</div>*@
+        </div>
+        <div id="TextBoxDiv_@i" class="form-group">
+            @Html.Hidden("listQuestionAnswer[" + answerid + "].AnswerId", item.AnswerId)
+            <div class="col-md-8" style="padding-left:0px;">
+                <label class="control-label">Answer @i: </label>
+                @*<label class="control-label">Question # @{int quesNum = i + 1; <span>@quesNum</span>} : </label>*@
+            </div>
+            <div class="col-md-12 no_border no-print" style="margin-bottom:10px;padding-left:0px;">
+                <textarea id="listQuestionAnswer[@answerid].Answer" name="listQuestionAnswer[@answerid].Answer" rows="16" class="form-control col-md-8 summernote Answer_@answerid">@item.Answer</textarea>
+            </div>
+            @*</div>*@
+        </div>
+    </div>
+                i++;
+                answerid++;
+            }
+        }
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="col-md-9">
+                <input type="button" class="btn btn-blue" value="Update" id="btnUpdate" onclick="UpdateTest(@Model.Id)" />
+                <input type="button" data-dismiss="modal" class="btn btn-blue" value="Cancel" />
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="col-md-12">
+                @Html.ValidationSummary("", new { @class = "text-danger validation-summary-errors margin-left-validation" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+
+}
+
+
+
+@*@Scripts.Render("~/bundles/jqueryval")*@
+
+@*<script>
+        $(document).ready(function () {
+            // Initialize Editor
+            $('.textarea-editor').summernote({
+                height: 300, // set editor height
+                minHeight: null, // set minimum height of editor
+                maxHeight: null, // set maximum height of editor
+                focus: true // set focus to editable area after initializing summernote
+            });
+        });
+
+
+    </script>*@
+<script type='text/javascript'>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.summernote').summernote({
+            focus: true,
+            toolbar: [
+                // [groupName, [list of button]]
+                ['style', ['undo', 'redo', 'bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph', 'style']],
+                ['height', ['height']],
+                ['insert', ['table', 'hr']],
+                ['misc', ['fullscreen', 'codeview', 'help']]
+
+            ]
+        });
+    });
+    $(document).ready(function () {
+        $(function () {
+
+        })
+    });
+    $('[data-toggle="tooltip"]').tooltip();
+
+    //$('#btnUpdate').click(function (event) {
+    //    //$("#frmSessionSubmit").submit();
+    //   // $('#frmSessionSubmit').submit(function () {
+    //        $.ajax({
+    //            url: "Edit",
+    //            type: 'POST',
+    //            data: $('#frmSessionSubmit').serialize(),
+    //            success: function (status) {
+    //                alert(status.status);
+    //                var id = 'tr_' + testId;
+    //                $("#myModal").modal('hide');
+    //            },
+    //            error: function () { alert("Error"); return false; }
+    //        });
+
+    //   // });
+    //});
+</script>
+

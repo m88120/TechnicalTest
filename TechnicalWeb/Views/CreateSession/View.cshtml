@@ -1,0 +1,419 @@
+﻿@model TechnicalCore.Models.Administration
+@{
+    /**/
+
+    /**/
+
+    //ViewBag.Title = "View";
+    ViewData["Title"] = "View";
+    int i = 1;
+    int j = 1;
+}
+<h2 class="no-print">View</h2>
+<hr class="no-print" />
+<style>
+    .form-view {
+        max-width: 1000px;
+        margin: 0 auto;
+        width: 100%;
+        /*border: 1px solid #ccc;*/
+        border-bottom: none;
+        padding: 0;
+    }
+
+        .form-view .col-md-12 {
+            /*border-bottom: 1px solid #ccc;*/
+            margin-bottom: 15px;
+        }
+
+            .form-view .col-md-12, .form-view .col-md-12 .form-group {
+                overflow: hidden;
+                margin-bottom: 0;
+            }
+
+                .form-view .col-md-12 .col-md-4 {
+                    margin-bottom: 0;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                }
+
+                .form-view .col-md-12 .col-md-8 {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                }
+
+                .form-view .col-md-12 .col-md-12.no_border, .col-md-12.no_border {
+                    border: none !important;
+                    max-height: 1200px;
+                    overflow: auto;
+                    padding-top: 6px;
+                }
+
+                .form-view .col-md-12 label.col-md-12.no_border {
+                }
+</style>
+<style type="text/css" media="print">
+    #printDiv {
+        display: block !important;
+    }
+
+    .no-print {
+        display: none;
+    }
+</style>
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-view", role = "form" }))
+{
+<div class="col-md-12 no-print">
+
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.Name, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.DateCreated, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.DateCreated, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.TestStart, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.TestStart, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.TestEnd, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.TestEnd, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Timetaken, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.Timetaken, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12  no-print">
+        <div class="form-group">
+            @Html.LabelFor(m => m.ExamStatus, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                <div class="currentStatus">
+                    @*@Html.DisplayFor(m => m.ExamStatus, new { @class = "form-control" })*@
+                    @Html.Label("lblExamStatus", Model.ExamStatus, new { @class = "control-label", @style = "font-weight:normal;", @id = "lblExamStatus" })
+                    <a href="#" id="btnChangeStatus" class="btn-blue" style="margin-left:20px;">Change Status</a>
+                </div>
+
+                <div id="dvStatus" style="display:none;">
+                    @Html.DropDownListFor(m => m.ExamStatus, ViewBag.ExamStatuses as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control", onchange = "updateStatus(" + Model.Id + ",this)" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Source, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.Source, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.TestTitleName, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.TestTitleName, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    @{
+        var url = "";
+
+        if (@Context.Request.Host.Host.ToString() == "urtestsite.com")
+        {
+            url = "http://" + @Context.Request.Host.Host.ToString() + ":" + @Context.Request.Host.Port + "/Createsession/token/" + Model.UniqueTestId;
+        }
+        else
+        {
+            url = "http://" + @Context.Request.Host.Host.ToString() + "/Createsession/token/" + Model.UniqueTestId;
+        }       
+    }
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.TestLink, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @*@Html.DisplayFor(m => m.TestTitleName, new { @class = "form-control" })*@
+                <input type="text" id="txtUrl" value="@url" style="min-width: 520px;border: 1px dashed #999;border-radius: 0;" class="form-control" />
+                <input type="button" onclick="Copyurl()" value="Copy url" />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Notes, new { @class = "col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(m => m.Notes, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Linktozip))
+    {
+        <div class="col-md-12  no-print">
+            <div class="form-group">
+
+                <div class="col-md-12 no_border" style="padding-top:6px; padding-bottom:10px;">
+
+                    <a href="@("../../TestFiles/"+Model.Linktozip)" target="_blank">Link to Zip file</a>
+                </div>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        @*<div class="col-md-12  no-print">
+                <div class="form-group">
+
+                    <div class="col-md-12 no_border" style="padding-top:6px; padding-bottom:10px;">
+
+                        <a id="Zipfile" href="javascript:void(0)" target="_blank" data-toggle="modal" data-target="#myModal">Link to Zip file</a>
+                    </div>
+                </div>
+
+            </div>*@
+    }
+    @if (Model.QuestionAndAnswerList.Count > 0)
+    {
+        <div class="col-md-12">
+
+            <div class="col-md-12 no_border no-print" style="padding-right:0px !important;">
+                <input type="button" value="Print" class="btn btn-blue" onclick="window.print();" style="float: right;" />
+            </div>
+
+        </div>
+    }
+    <div class="col-md-12 no_border no-print" style="margin-bottom:10px;max-height: 365px;">
+        @foreach (var item in Model.QuestionAndAnswerList)
+        {
+            <div class="col-md-12" style="padding-left:0px !important;">
+                <div id="TextBoxDiv_" class="form-group" style="overflow:visible; font-weight:bold;">
+                    <div class="col-md-4">
+                        @*@Html.Label("Question 1:", new { @class = "control-label" })*@
+                        <label class="control-label">Question @i : </label>
+                    </div>
+                    <div class="col-md-8 no_border no-print" style="margin-bottom:10px;">
+                        @*<textarea id="Questions[0].Name" name="Questions[0].Name" rows="16" class="form-control col-md-8 summernote Quest_1"></textarea>*@
+                        @Html.Raw(item.Question.ToString().Replace(Environment.NewLine, "<br/>"))
+                    </div>
+                    @*</div>*@
+                </div>
+                <div id="TextBoxDiv_" class="form-group" style="overflow:visible">
+                    <div class="col-md-4">
+                        @*@Html.Label("Question 1:", new { @class = "control-label" })*@
+                        <label class="control-label">Answer @i : </label>
+                    </div>
+                    <div class="col-md-8 no_border no-print" style="margin-bottom:10px;">
+                        @*<textarea id="Questions[0].Name" name="Questions[0].Name" rows="16" class="form-control col-md-8 summernote Quest_1"></textarea>*@
+                        @Html.Raw(item.Answer == null ? " " : item.Answer.Replace(Environment.NewLine, "<br/>"))
+                    </div>
+                    @*</div>*@
+                </div>
+            </div>
+            i++;
+        }
+    </div>
+
+    @Html.ActionLink("Back to List", "Index", null, null, new { @class = "btn-blue no-print", @style = "margin-left:27px;" })
+</div>
+
+
+}
+
+
+@*Div which works for print*@
+<div id="printDiv" style="display:none">
+    <div class="col-md-12">
+        @Html.LabelFor(m => m.Name)
+        @Html.DisplayFor(m => m.Name)
+    </div>
+    <div class="col-md-12">
+        @Html.LabelFor(m => m.Timetaken)
+        @Html.DisplayFor(m => m.Timetaken)
+    </div>
+    <div class="col-md-12">
+        @Html.LabelFor(m => m.Source)
+        @Html.DisplayFor(m => m.Source)
+    </div>
+    <div class="col-md-12">
+        @Html.LabelFor(m => m.Notes)
+        @Html.DisplayFor(m => m.Notes)
+    </div>
+
+    <hr />
+
+    @foreach (var item in Model.QuestionAndAnswerList)
+    {
+        <div class="col-md-12">
+            <div id="TextBoxDiv_" class="form-group" style="overflow:visible;font-weight:bold;">
+                <div class="col-md-2">
+                    <label class="control-label">Question @j : </label>
+                </div>
+                <div class="col-md-10 no_border" style="margin-bottom:10px;">
+                    @Html.Raw(item.Question.ToString().Replace(Environment.NewLine, "<br/>").Replace("<pre", "<p").Replace("</pre>", "</p>"))
+                </div>
+                @*</div>*@
+            </div>
+            <div id="TextBoxDiv_" class="form-group" style="overflow:visible">
+                <div class="col-md-2">
+                    <label class="control-label">Answer @j : </label>
+                </div>
+                <div class="col-md-10 no_border" style="margin-bottom:10px;">
+                    @Html.Raw(item.Answer == null ? " " : item.Answer.Replace(Environment.NewLine, "<br/>").Replace("<pre", "<p").Replace("</pre>", "</p>"))
+                </div>
+                @*</div>*@
+            </div>
+        </div>
+        j++;
+    }
+
+</div>
+<div class="clearfix"></div>
+
+@section Scripts {
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnChangeStatus").click(function (event) {
+            $("#btnChangeStatus").hide();
+            $(".currentStatus").hide();
+            $("#dvStatus").show();
+        })
+
+    });
+        function Copyurl() {
+            /* Get the text field */
+            var copyText = document.getElementById("txtUrl");
+            /* Select the text field */
+            copyText.select();
+            /* Copy the text inside the text field */
+            document.execCommand("Copy");
+            /* Alert the copied text */
+        }
+    function updateStatus(id, obj) {
+        var status = obj.value;
+        var txt = $('#ExamStatus :selected').text();
+        var ExamStatusId = $('#ExamStatus :selected').val();
+        if (ExamStatusId == "") { alertify.warning('Please select exam status!'); return false;}
+
+           // alert(status);
+          $.ajax({
+                url: '@Url.Action("ExamStatusUpdate")',
+                data: { 'examId': id, 'status': status },
+                async: true,
+                method: 'POST',
+                success: function (result) {
+                    if (result.isSuccess) {
+                        $("#lblExamStatus").text(txt);
+                        $("#btnChangeStatus").show();
+                        $(".currentStatus").show();
+                        $("#dvStatus").hide();
+                        var trid = 'tr_' + id;
+                        // var $table = $('#tblStud').DataTable();
+                        // lastRow = $table.find("tr:first");
+                        if ($('#' + trid).hasClass('selected')) {
+                            $('#' + trid).removeClass('selected');
+                        }
+                        else {
+                            table.$('tr.selected').removeClass('selected');
+                            $('#' + trid).addClass('selected');
+                        }
+                        $('#' + trid).find("td:eq(8)").find("#ddlStatus").val(ExamStatusId);
+                        table.row('.selected').draw(false);
+                        table.$('tr.selected').removeClass('selected');
+                        alertify.success('Exam status updated successfully');
+
+                        var isShowAllVal = $('input[name="chkshowAll"]').val();
+                        var ishowHiredVal = $('input[name="chkshowHired"]').val();
+                        var isRequestOnSiteVal = $('input[name="chkRequestOnSite"]').val();
+
+                        //if (isRequestOnSiteVal == "true" && ishowHiredVal == "true" && isShowAllVal == "true" && status != "1") {
+                        //    $(obj).parent().parent('tr').hide();
+                        //}
+                        //else if (isRequestOnSiteVal == "false" && ishowHiredVal == "false" && isShowAllVal == "false" && status == "1") {
+                        //    $(obj).parent().parent('tr').hide();
+                        //}
+                        //else if (isRequestOnSiteVal == "true" && ishowHiredVal == "false" && isShowAllVal == "false" && status != "3" && status != "4") {
+                        //    $(obj).parent().parent('tr').hide();
+                        //}
+                        //else if (isRequestOnSiteVal == "false" && ishowHiredVal == "true" && isShowAllVal == "false" && status != "2" && status != "4") {
+                        //    $(obj).parent().parent('tr').hide();
+                        //}
+                        //else if (isRequestOnSiteVal == "false" && ishowHiredVal == "false" && isShowAllVal == "true" && status != "2" && status != "3") {
+                        //    $(obj).parent().parent('tr').hide();
+                        //}
+                        //else if (isRequestOnSiteVal == "true" && ishowHiredVal == "true" && isShowAllVal == "false" && status != "4") {
+                        //    $(obj).parent().parent('tr').hide();
+                        //}
+                        //else if (isRequestOnSiteVal == "true" && isShowAllVal == "true" && ishowHiredVal == "false" && status != "3") {
+                        //    $(obj).parent().parent('tr').hide();
+                        //}
+                        //else if (isRequestOnSiteVal == "false" && isShowAllVal == "true" && ishowHiredVal == "true" && status != "2") {
+                        //    $(obj).parent().parent('tr').hide();
+                        //}
+                        //else {
+
+                        //}
+
+
+
+
+
+                    }
+                    if (!result.isSuccess) {
+                        alertify.error('Error occurred');
+                        //alert("Error occurred");
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+    function printContent(el) {
+        // var myBackup = $('#myModal').clone();
+        //var restorepage = document.body.innerHTML;
+        //var printcontent = document.getElementById(el).innerHTML;
+        //document.body.innerHTML = printcontent;
+        //window.print();
+        //document.body.innerHTML = restorepage;
+
+        //debugger;
+        // $("#printDiv").show();
+        var $printerDiv = $('<div id="printContainer"></div>'); // create the div that will contain the stuff to be printed
+        var printcontent = "";
+        var printcontent = document.getElementById(el).innerHTML;
+        $printerDiv.html(printcontent); // add the content to be printed
+        // $('body').append($printerDiv).addClass("printingContent"); // add the div to body, and make the body aware of printing (we apply a set of css styles to the body to hide its contents)
+        $('body').append($printerDiv);
+        window.print(); // call print
+        // $("#printDiv").hide();
+        $('body').remove("#printContainer");
+        printcontent = "";
+        $printerDiv.remove(); // remove the div
+       
+    }
+   
+    </script>
+}

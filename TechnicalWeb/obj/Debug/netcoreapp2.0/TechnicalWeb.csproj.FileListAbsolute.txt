@@ -1,0 +1,28 @@
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalWeb.deps.json
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalWeb.runtimeconfig.json
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalWeb.runtimeconfig.dev.json
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalWeb.dll
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalWeb.pdb
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalCore.dll
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalCore.pdb
+E:\Projects\TechnicalWeb\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalCore.dll.config
+E:\Projects\TechnicalWeb\TechnicalWeb\obj\Debug\netcoreapp2.0\TechnicalWeb.csprojResolveAssemblyReference.cache
+E:\Projects\TechnicalWeb\TechnicalWeb\obj\Debug\netcoreapp2.0\TechnicalWeb.csproj.CoreCompileInputs.cache
+E:\Projects\TechnicalWeb\TechnicalWeb\obj\Debug\netcoreapp2.0\TechnicalWeb.AssemblyInfoInputs.cache
+E:\Projects\TechnicalWeb\TechnicalWeb\obj\Debug\netcoreapp2.0\TechnicalWeb.AssemblyInfo.cs
+E:\Projects\TechnicalWeb\TechnicalWeb\obj\Debug\netcoreapp2.0\TechnicalWeb.dll
+E:\Projects\TechnicalWeb\TechnicalWeb\obj\Debug\netcoreapp2.0\TechnicalWeb.pdb
+G:\Upwork Project\core\Core\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalWeb.deps.json
+G:\Upwork Project\core\Core\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalWeb.runtimeconfig.json
+G:\Upwork Project\core\Core\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalWeb.runtimeconfig.dev.json
+G:\Upwork Project\core\Core\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalWeb.dll
+G:\Upwork Project\core\Core\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalWeb.pdb
+G:\Upwork Project\core\Core\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalCore.dll
+G:\Upwork Project\core\Core\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalCore.pdb
+G:\Upwork Project\core\Core\TechnicalWeb\bin\Debug\netcoreapp2.0\TechnicalCore.dll.config
+G:\Upwork Project\core\Core\TechnicalWeb\obj\Debug\netcoreapp2.0\TechnicalWeb.csprojResolveAssemblyReference.cache
+G:\Upwork Project\core\Core\TechnicalWeb\obj\Debug\netcoreapp2.0\TechnicalWeb.csproj.CoreCompileInputs.cache
+G:\Upwork Project\core\Core\TechnicalWeb\obj\Debug\netcoreapp2.0\TechnicalWeb.AssemblyInfoInputs.cache
+G:\Upwork Project\core\Core\TechnicalWeb\obj\Debug\netcoreapp2.0\TechnicalWeb.AssemblyInfo.cs
+G:\Upwork Project\core\Core\TechnicalWeb\obj\Debug\netcoreapp2.0\TechnicalWeb.dll
+G:\Upwork Project\core\Core\TechnicalWeb\obj\Debug\netcoreapp2.0\TechnicalWeb.pdb

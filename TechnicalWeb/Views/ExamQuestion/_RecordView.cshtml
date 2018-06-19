@@ -1,0 +1,29 @@
+﻿@model List<TechnicalCore.Models.ExamQuestionModel>
+<style>
+    .DescWidth {
+        width: 60%;
+    }
+</style>
+
+@{
+
+    var grid = new WebGrid(Model, canPage: true, rowsPerPage: 40,
+                   selectionFieldName: "selectedRow", ajaxUpdateContainerId: "grdRecords");
+    grid.Pager(WebGridPagerModes.All);}
+
+@if (Model.Count > 0)
+{
+    @grid.GetHtml(tableStyle: "webGrid",
+                   headerStyle: "header",
+                   alternatingRowStyle: "alt",
+                   selectedRowStyle: "select",
+                   columns: grid.Columns(
+                   grid.Column("Question", header: "Question"),
+                  //grid.Column("Description", format: (item) => item.Description.ToString().Length > 500 ? item.Description.ToString().Substring(0, 500) + "......" : item.Description.ToString(), header: "Description", style: "DescWidth"),
+                  grid.Column("Action", header: "Action", format: @<text> <a onclick="deleteTest(@item.TestId)">Delete</a> <a onclick="editTest(@item.TestId)">Edit</a></text>)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ))
+}
+else
+{
+    <div><strong>no test found</strong></div>
+}
